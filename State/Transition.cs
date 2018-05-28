@@ -1,18 +1,25 @@
-﻿using Patterns.Observer;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Patterns.StateMachine
-{
-    [RequireComponent(typeof(State))]
-    public class Transition : MonoBehaviour
-    {
-        public Message trigger;
-        [HideInInspector] public State source;
-        public State target;
+public class StateTransition {
 
-        void Awake()
-        {
-            source = GetComponent<State>();
-        }
+    public States source;
+    public States target;
+
+    public delegate bool TransitionCondition();
+    public TransitionCondition Condition;
+
+    public StateTransition(States source, States target, TransitionCondition condition)
+    {
+        this.source = source;
+        this.target = target;
+        this.Condition = condition;
     }
+
+    public bool HasMetCondition()
+    {
+        return Condition();
+    }
+
 }
